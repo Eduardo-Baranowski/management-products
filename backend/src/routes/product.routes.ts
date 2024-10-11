@@ -6,7 +6,11 @@ import { CreateProductController } from '@/controllers';
 import { ListProductsController } from '@/controllers/product/list-product.controller';
 import { UpdateProductController } from '@/controllers/product/update-product.controller';
 
-import { createProductBodySchema, updateProductBodySchema } from '@/validations';
+import {
+  createProductBodySchema,
+  listProductsQuerySchema,
+  updateProductBodySchema,
+} from '@/validations';
 
 import { validateRequest } from '@/middleware';
 
@@ -33,7 +37,10 @@ router.patch(
 );
 
 router.get(
-  '/:customerCode/list/:measureType',
+  '/products',
+  validateRequest({
+    query: listProductsQuerySchema,
+  }),
   listProductController.handle.bind(listProductController),
 );
 

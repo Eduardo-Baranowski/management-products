@@ -2,6 +2,8 @@ import { RequestHandler } from 'express';
 
 import { z, ZodTypeAny } from 'zod';
 
+import { validationError } from '@/utils';
+
 type RequestSchemaKey = 'body' | 'query' | 'params';
 
 export type RequestSchema = {
@@ -29,11 +31,7 @@ export const validateRequest =
       return next();
     } catch (error) {
       if (error instanceof z.ZodError) {
-        const errorResponse = {
-          error_code: 'INVALID_DATA',
-          error_description: error.errors[0].message,
-        };
-        return response.status(400).json(errorResponse);
+        return response.status(400).json(validationError(error));
       }
 
       throw error;

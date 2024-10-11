@@ -4,11 +4,14 @@ import { PrismaCategoryRepository, PrismaProductRepository } from '@/repositorie
 
 import { UpdateProductInputDto, ProductOutputDto } from '@/dtos';
 
-import {CategoryNotFoundError, ProductFoundError } from '@/errors';
+import { CategoryNotFoundError, ProductFoundError } from '@/errors';
 
 @injectable()
 export class UpdateProductUseCase {
-  constructor(private readonly productRepository: PrismaProductRepository, private readonly categoryRepository: PrismaCategoryRepository) {}
+  constructor(
+    private readonly productRepository: PrismaProductRepository,
+    private readonly categoryRepository: PrismaCategoryRepository,
+  ) {}
 
   async execute(input: UpdateProductInputDto): Promise<ProductOutputDto> {
     const product = await this.productRepository.findById(input.id);
@@ -22,10 +25,7 @@ export class UpdateProductUseCase {
       throw new CategoryNotFoundError();
     }
 
-
-    const updatedProduct = await this.productRepository.update(
-      input, category.discount
-    );
+    const updatedProduct = await this.productRepository.update(input, category.discount);
 
     return updatedProduct;
   }

@@ -1,4 +1,4 @@
-import { OrderByValue, PaginationInputDto, PaginationOutputDto } from "./pagination.dto";
+import { OrderByValue, PaginationInputDto, PaginationOutputDto } from './pagination.dto';
 
 export type ProductDto = {
   id: number;
@@ -69,5 +69,3 @@ export type FindAllProductsOutPutDto = {
   price: number;
   promotionalPrice: number;
 };
-
-

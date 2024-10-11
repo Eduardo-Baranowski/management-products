@@ -2,7 +2,7 @@ import { injectable } from 'tsyringe';
 
 import { PrismaProductRepository } from '@/repositories';
 
-import { FindAllProductsInputDto, FindAllProductsOutputDto, FindAllProductsOutPutDto } from '@/dtos';
+import { FindAllProductsInputDto, FindAllProductsOutputDto } from '@/dtos';
 
 import { makePagination } from '@/utils/pagination.util';
 
@@ -31,4 +31,3 @@ export class ListProductsUseCase {
     });
   }
 }
-

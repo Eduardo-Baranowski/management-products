@@ -12,9 +12,10 @@ export class ListProductsController {
 
   async handle(request: Request, response: Response): Promise<Response> {
     const input = {
-      id: request.params.id,
-      name: request.params.name,
+      page: Number(request.query.page),
+      limit: Number(request.query.limit),
     };
+
     try {
       const products = await this.listProduct.execute(input);
 
