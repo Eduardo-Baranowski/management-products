@@ -25,10 +25,9 @@ const columns: GridColDef[] = [
   },
 ];
 
-const paginationModel = { page: 0, pageSize: 5 };
+const paginationModel = { page: 0, pageSize: 10 };
 
 const Inicio: React.FC = () => {
-  const [products, setProducts] = useState<ProductDto[]>([]);
   const [rows, setRows] = useState<ProductDto[]>([]);
 
   const loadingProducts = async () => {
@@ -36,7 +35,7 @@ const Inicio: React.FC = () => {
       .get('/products', {
         params: {
           page: 1,
-          limit: 5,
+          limit: 100,
         },
       })
       .then(response => {
@@ -54,8 +53,6 @@ const Inicio: React.FC = () => {
           });
         });
         setRows(rows1);
-        console.log('kkkkk', response.data.items);
-        setProducts(response.data);
       })
       .catch(error => console.log(error));
   };
@@ -64,16 +61,13 @@ const Inicio: React.FC = () => {
     loadingProducts();
   }, []);
 
-  console.log(products, 'llll');
-  console.log(rows, '----');
-
   return (
     <Paper sx={{ height: '100vh', width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columns}
         initialState={{ pagination: { paginationModel } }}
-        pageSizeOptions={[5, 10]}
+        pageSizeOptions={[10, 100]}
         checkboxSelection
         sx={{ border: 0 }}
       />
