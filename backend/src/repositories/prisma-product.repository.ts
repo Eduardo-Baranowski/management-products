@@ -5,6 +5,7 @@ import {
   CreateProductInputDto,
   FindAllProductsInputDto,
   FindAllProductsOutPutDto,
+  ProductDto,
   ProductExistsInputDto,
   ProductOutputDto,
   UpdateProductInputDto,
@@ -157,8 +158,9 @@ export class PrismaProductRepository extends BaseRepository {
     return count;
   }
 
-  static mapToDto(product: PrismaProduct): ProductOutputDto {
+  static mapToDto(product: PrismaProduct): ProductDto {
     return {
+      id: product.id,
       categoryId: product.categoryId,
       color: product.color,
       description: product.description,
