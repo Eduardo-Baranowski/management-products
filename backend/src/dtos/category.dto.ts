@@ -26,25 +26,25 @@ export type UpdateCategoryInputDto = {
   discount: number;
 };
 
-export type FindAllCategorysOrderByFields = {
+export type FindAllCategoriesOrderByFields = {
   updatedAt: OrderByValue;
   name: OrderByValue;
 };
 
-export type FindAllCategorysFilterFields = {
+export type FindAllCategoriesFilterFields = {
   name: string;
   createdAt: Date;
   updatedAt: Date;
 };
 
 export type FindAllCategorysInputDto = PaginationInputDto<
-  FindAllCategorysOrderByFields,
-  FindAllCategorysFilterFields
+  FindAllCategoriesOrderByFields,
+  FindAllCategoriesFilterFields
 >;
 
 export type FindAllCategorysOutputDto = PaginationOutputDto<CategoryOutputDto>;
 
-export type CountCategorysInputDto = Partial<FindAllCategorysFilterFields>;
+export type CountCategorysInputDto = Partial<FindAllCategoriesFilterFields>;
 
 export type FindAllCategorysOutPutDto = {
   name: string;

@@ -4,14 +4,17 @@ import { toast, ToastContainer } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import api from '../../services/api';
-import { Container, Input, Label, ViewInput, ViewForm } from './style';
+import { Container, Input, Label, ViewInput, ViewForm, ViewSelect } from './style';
 import { Button, Stack } from '@mui/material';
+import Select from 'react-select';
+
+import { CategoryDto } from '../../dtos/category.dto';
 
 const schema = yup.object().shape({
   name: yup.string().required('Por  favor, digite o nome do produto!'),
   description: yup.string().required('Por  favor, digite a descrição do produto!'),
   price: yup.number().required('Por favor, informe o preço'),
-  categoryId: yup.number().required('Por favor, informe a categoria'),
+  categoryId: yup.string().required('Por favor, informe a categoria'),
   color: yup.string().required('Por favor, informe a cor do produto'),
 });
 
@@ -21,9 +24,18 @@ const Product: React.FC = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const [categories, setCategories] = React.useState<CategoryDto[]>([]);
+  const [categoryId, setCategoryId] = React.useState(0);
+  const [isClearable] = React.useState(true);
+  const [isSearchable] = React.useState(true);
+  const [isDisabled] = React.useState(false);
+  const [isLoading] = React.useState(false);
+  const [isRtl] = React.useState(false);
 
   const onSubmitHandler = handleSubmit(async (data: any) => {
     try {
@@ -31,7 +43,7 @@ const Product: React.FC = () => {
         name: data.name,
         description: data.description,
         color: data.color,
-        categoryId: data.categoryId,
+        categoryId: categoryId,
         price: data.price,
       });
       reset();
@@ -40,6 +52,29 @@ const Product: React.FC = () => {
       toast.error('Não foi possível criar o produto');
     }
   });
+
+  const loadingCategories = async () => {
+    await api
+      .get('/categories', {
+        params: {
+          page: 1,
+          limit: 100,
+        },
+      })
+      .then(response => {
+        setCategories(response.data.items);
+      })
+      .catch(error => console.log(error));
+  };
+
+  const filterCategories = categories.map((category: CategoryDto) => ({
+    label: category.name,
+    value: String(category.id),
+  }));
+
+  React.useEffect(() => {
+    loadingCategories();
+  }, []);
 
   return (
     <Container>
@@ -64,7 +99,33 @@ const Product: React.FC = () => {
           </ViewInput>
           <ViewInput>
             <Label>Categoria *</Label>
-            <Input {...register('categoryId', { required: true })} />
+            <ViewSelect>
+              <Select
+                className="basic-single"
+                classNamePrefix="select"
+                defaultValue={filterCategories[0]}
+                isDisabled={isDisabled}
+                isLoading={isLoading}
+                isClearable={isClearable}
+                isRtl={isRtl}
+                isSearchable={isSearchable}
+                name="categoryId"
+                options={filterCategories}
+                onChange={e => {
+                  console.log(e);
+                  if (e === null) {
+                    e = {
+                      value: '',
+                      label: '',
+                    };
+                  } else {
+                    setValue('categoryId', e!.value);
+                    register('categoryId', { required: true });
+                    setCategoryId(Number(e?.value));
+                  }
+                }}
+              />
+            </ViewSelect>
             {errors.categoryId?.message && (
               <p style={{ color: '#000' }}>{errors.categoryId?.message}</p>
             )}

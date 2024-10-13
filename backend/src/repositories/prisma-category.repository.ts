@@ -1,6 +1,5 @@
 import { injectable } from 'tsyringe';
 
-
 import {
   CountCategorysInputDto,
   CreateCategoryInputDto,
@@ -44,20 +43,13 @@ export class PrismaCategoryRepository extends BaseRepository {
     return PrismaCategoryRepository.mapToDto(category);
   }
 
-
-
   async create(input: CreateCategoryInputDto): Promise<CategoryOutputDto> {
-    const {
-      name,
-      discount
-    } = input;
-
-
+    const { name, discount } = input;
 
     const category = await this.client.category.create({
       data: {
         name,
-        discount
+        discount,
       },
       select: {
         id: true,
@@ -84,7 +76,6 @@ export class PrismaCategoryRepository extends BaseRepository {
 
     return PrismaCategoryRepository.mapToDto(category);
   }
-
 
   private where(input: CountCategorysInputDto): object {
     const where = {};
@@ -150,12 +141,11 @@ export class PrismaCategoryRepository extends BaseRepository {
     return count;
   }
 
-
-  static mapToDto(category: PrismaCategory): CategoryOutputDto {
+  static mapToDto(category: PrismaCategory): CategoryDto {
     return {
+      id: category.id,
       discount: category.discount,
       name: category.name,
     };
   }
-
 }
