@@ -45,9 +45,14 @@ export class PrismaCategoryRepository extends BaseRepository {
 
   async create(input: CreateCategoryInputDto): Promise<CategoryOutputDto> {
     const { name, discount } = input;
-
+    const lastId = await this.client.category.findFirst({
+      orderBy: {
+        id: 'desc',
+      },
+    });
     const category = await this.client.category.create({
       data: {
+        id: lastId!.id + 1,
         name,
         discount,
       },

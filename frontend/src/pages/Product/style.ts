@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
 export const Container = styled.div`
   height: 100vh;
@@ -44,8 +44,23 @@ export const ViewInput = styled.div`
   gap: 0.5rem;
 `;
 
+type ErrorProps = {
+  type: string;
+};
+
+export const HelperText = styled.p<ErrorProps>`
+  font-family: Inter;
+  font-size: 1rem;
+  font-weight: bold;
+  color: ${({ type }) => (type === 'error' ? '#FF0000' : 'green')};
+`;
+
 export const ViewSelect = styled.div`
   width: 100%;
+`;
+export const TitleForm = styled.h3`
+  text-align: center;
+  color: #000;
 `;
 
 export const ViewForm = styled.div`

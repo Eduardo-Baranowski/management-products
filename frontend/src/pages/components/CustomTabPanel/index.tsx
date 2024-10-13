@@ -8,7 +8,11 @@ function CustomTabPanel(props: TabPanelProps) {
   const { children, ...other } = props;
 
   return (
-    <div role="tabpanel" {...other}>
+    <div
+      role="tabpanel"
+      {...other}
+      style={{ height: '100px', borderBottom: 'inset', marginRight: '10px', marginLeft: '10px' }}
+    >
       <Box sx={{ p: 3 }} justifyContent={'center'} alignItems={'center'}>
         <Typography>{children}</Typography>
       </Box>

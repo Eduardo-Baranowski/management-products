@@ -6,10 +6,7 @@ import { paginationValidation } from './pagination';
 
 export const createCategoryBodySchema = z.object({
   name: z.string({ required_error: 'Informe o nome' }),
-  description: z.string({ required_error: 'Informe a descrição' }),
-  color: z.string({ required_error: 'Informe a cor' }),
-  categoryId: z.number(),
-  price: z.number(),
+  discount: z.number(),
 });
 
 export const updateCategoryBodySchema = z.object({

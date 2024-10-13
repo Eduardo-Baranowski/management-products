@@ -11,11 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(helmet());
 
-app.use(
-  cors({
-    origin: process.env.ALLOWED_ORIGINS.split(','),
-  }),
-);
+app.use(cors());
 app.use('/api/v1', routes);
 
 app.use((error: Error, request: Request, response: Response, _next: NextFunction) => {

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
@@ -16,6 +16,10 @@ export const TituloCentralizado = styled.h1`
 export const ViewSelect = styled.div`
   flex: 0.3;
   margin-right: 20px;
+`;
+
+export const ViewHearderTable = styled.div`
+  height: 100px;
 `;
 
 export const DivSearch = styled.div`

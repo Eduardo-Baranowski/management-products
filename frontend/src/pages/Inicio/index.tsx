@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-// eslint-disable-next-line import/named
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import SendIcon from '@mui/icons-material/Send';
 import Paper from '@mui/material/Paper';
 import api from '../../services/api';
@@ -9,14 +8,13 @@ import Select from 'react-select';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import CustomTabPanel from '../components/CustomTabPanel';
-import { alpha, IconButton, Input, Toolbar, Tooltip, Typography } from '@mui/material';
+import { Input } from '@mui/material';
 import { CategoryDto } from '../../dtos/category.dto';
-import { DivSearch, ViewSelect } from './style';
+import { DivSearch, ViewHearderTable, ViewSelect } from './style';
 import { toast, ToastContainer } from 'react-toastify';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
+import EnhancedTableToolbar from '../components/EnhancedTableToolbar';
 
-const columns: GridColDef[] = [
+const columns = [
   { field: 'id', headerName: 'Id', width: 70 },
   { field: 'name', headerName: 'Nome', width: 100 },
   { field: 'description', headerName: 'Descrição', width: 200 },
@@ -37,7 +35,8 @@ const columns: GridColDef[] = [
 const paginationModel = { page: 0, pageSize: 10 };
 
 const Inicio: React.FC = () => {
-  const [cnpjOrName, setCnpjOrName] = useState('');
+  const { innerHeight: height } = window;
+  const [nameSearch, setNameSearch] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [rows, setRows] = useState<ProductDto[]>([]);
@@ -118,57 +117,9 @@ const Inicio: React.FC = () => {
     loadingProducts();
   }, []);
 
-  interface EnhancedTableToolbarProps {
-    numSelected: number;
-  }
-  function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-    const { numSelected } = props;
-    return (
-      <Toolbar
-        sx={[
-          {
-            pl: { sm: 2 },
-            pr: { xs: 1, sm: 1 },
-          },
-          numSelected > 0 && {
-            bgcolor: theme =>
-              alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-          },
-        ]}
-      >
-        {numSelected > 0 ? (
-          <Typography sx={{ flex: '1 1 100%' }} color="inherit" variant="subtitle1" component="div">
-            {numSelected} selected
-          </Typography>
-        ) : (
-          <Typography sx={{ flex: '1 1 100%' }} variant="h6" id="tableTitle" component="div">
-            Nutrition
-          </Typography>
-        )}
-        {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton
-              onClick={() => {
-                handleDelete();
-              }}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <Tooltip title="Filter list">
-            <IconButton>
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
-        )}
-      </Toolbar>
-    );
-  }
-
   return (
     <>
-      <Paper sx={{ height: '100vh', width: '100%' }}>
+      <Paper sx={{ width: '100%' }}>
         <CustomTabPanel>
           <Stack
             sx={{ width: '100%' }}
@@ -181,9 +132,9 @@ const Inicio: React.FC = () => {
               <Input
                 style={{ marginRight: 20, flex: 0.5 }}
                 placeholder="Digite o nome do produto"
-                value={cnpjOrName}
+                value={nameSearch}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  setCnpjOrName(event.target.value);
+                  setNameSearch(event.target.value);
                 }}
               />
               <ViewSelect>
@@ -215,7 +166,7 @@ const Inicio: React.FC = () => {
                 variant="contained"
                 endIcon={<SendIcon />}
                 onClick={() => {
-                  loadingProducts(cnpjOrName);
+                  loadingProducts(nameSearch);
                 }}
                 disabled={loading}
               >
@@ -233,23 +184,27 @@ const Inicio: React.FC = () => {
             </Button>
           </Stack>
         </CustomTabPanel>
-        <view>
-          <EnhancedTableToolbar numSelected={selectedRows.length} />
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[10, 100]}
-            checkboxSelection
-            disableMultipleRowSelection
-            onRowSelectionModelChange={(ids: any) => {
-              setSelectedRows(ids);
-            }}
-            sx={{ border: 0 }}
-          />
-        </view>
+        <ViewHearderTable>
+          <EnhancedTableToolbar numSelected={selectedRows.length} onPress={handleDelete} />
+        </ViewHearderTable>
+        <DataGrid
+          style={{
+            height: height - 200,
+            justifyContent: 'center',
+          }}
+          rows={rows}
+          columns={columns}
+          initialState={{ pagination: { paginationModel } }}
+          pageSizeOptions={[10, 100]}
+          checkboxSelection
+          disableMultipleRowSelection
+          onRowSelectionModelChange={(ids: any) => {
+            setSelectedRows(ids);
+          }}
+          sx={{ border: 0 }}
+        />
+        <ToastContainer autoClose={4000} position="top-right" theme="colored" closeOnClick />
       </Paper>
-      <ToastContainer autoClose={4000} position="top-right" theme="colored" closeOnClick />
     </>
   );
 };

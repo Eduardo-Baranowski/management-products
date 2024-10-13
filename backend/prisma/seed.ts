@@ -8,27 +8,27 @@ const run = async (): Promise<void> => {
     {
       id: 1,
       name: 'Eletroportáteis',
-      discount: 2.55
+      discount: 2.55,
     },
     {
       id: 2,
       name: 'Móveis',
-      discount: 3
+      discount: 3,
     },
     {
       id: 3,
       name: 'Geladeiras',
-      discount: 4.3
+      discount: 4.3,
     },
     {
       id: 4,
       name: 'Smartphones',
-      discount: 5
+      discount: 5,
     },
     {
       id: 5,
       name: 'Eletrônicos',
-      discount: 7.5
+      discount: 7.5,
     },
   ];
 

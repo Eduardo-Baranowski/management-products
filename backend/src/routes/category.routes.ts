@@ -2,15 +2,16 @@ import { Router } from 'express';
 
 import { container } from 'tsyringe';
 
-import { ListCategorysController } from '@/controllers';
+import { CreateCategoryController, ListCategorysController } from '@/controllers';
 
-import { listCategoriesQuerySchema } from '@/validations';
+import { createCategoryBodySchema, listCategoriesQuerySchema } from '@/validations';
 
 import { validateRequest } from '@/middleware';
 
 const router = Router();
 
 const listCategoryController = container.resolve(ListCategorysController);
+const createCategoryController = container.resolve(CreateCategoryController);
 
 router.get(
   '/categories',
@@ -18,6 +19,14 @@ router.get(
     query: listCategoriesQuerySchema,
   }),
   listCategoryController.handle.bind(listCategoryController),
+);
+
+router.post(
+  '/category',
+  validateRequest({
+    body: createCategoryBodySchema,
+  }),
+  createCategoryController.handle.bind(createCategoryController),
 );
 
 export default router;
