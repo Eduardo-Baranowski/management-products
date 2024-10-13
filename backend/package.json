@@ -11,8 +11,7 @@
     "test": "jest --passWithNoTests",
     "test:watch": "npm test -- --watch",
     "test:staged": "npm test -- --findRelatedTests",
-    "test:ci": "npm test -- --coverage --ci",
-    "prepare": "husky install"
+    "test:ci": "npm test -- --coverage --ci"
   },
   "keywords": [],
   "author": "Eduardo Baranowski",

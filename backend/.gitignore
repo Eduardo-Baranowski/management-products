@@ -20,6 +20,8 @@ node_modules
 .vscode
 .idea
 
+package-lock.json
+
 .flaskenv*
 !.env.project
 !.env.vault
