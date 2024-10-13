@@ -9,9 +9,12 @@ import Select from 'react-select';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import CustomTabPanel from '../components/CustomTabPanel';
-import { Input } from '@mui/material';
+import { alpha, IconButton, Input, Toolbar, Tooltip, Typography } from '@mui/material';
 import { CategoryDto } from '../../dtos/category.dto';
 import { DivSearch, ViewSelect } from './style';
+import { toast, ToastContainer } from 'react-toastify';
+import DeleteIcon from '@mui/icons-material/Delete';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'Id', width: 70 },
@@ -46,7 +49,6 @@ const Inicio: React.FC = () => {
   const [isLoading] = React.useState(false);
   const [isRtl] = React.useState(false);
 
-  console.log(selectedRows);
   const loadingProducts = async (filter?: string) => {
     setLoading(true);
     await api
@@ -78,7 +80,18 @@ const Inicio: React.FC = () => {
       .catch(error => {
         setLoading(false);
         console.log(error);
+        toast.error('Não foi possível carregar produtos');
       });
+  };
+
+  const handleDelete = async () => {
+    try {
+      await api.delete(`/product/${selectedRows}`);
+      setSelectedRows([]);
+      loadingProducts();
+    } catch (error) {
+      toast.error('Não foi possível deletar o produto');
+    }
   };
 
   const loadingCategories = async () => {
@@ -104,6 +117,54 @@ const Inicio: React.FC = () => {
     loadingCategories();
     loadingProducts();
   }, []);
+
+  interface EnhancedTableToolbarProps {
+    numSelected: number;
+  }
+  function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
+    const { numSelected } = props;
+    return (
+      <Toolbar
+        sx={[
+          {
+            pl: { sm: 2 },
+            pr: { xs: 1, sm: 1 },
+          },
+          numSelected > 0 && {
+            bgcolor: theme =>
+              alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+          },
+        ]}
+      >
+        {numSelected > 0 ? (
+          <Typography sx={{ flex: '1 1 100%' }} color="inherit" variant="subtitle1" component="div">
+            {numSelected} selected
+          </Typography>
+        ) : (
+          <Typography sx={{ flex: '1 1 100%' }} variant="h6" id="tableTitle" component="div">
+            Nutrition
+          </Typography>
+        )}
+        {numSelected > 0 ? (
+          <Tooltip title="Delete">
+            <IconButton
+              onClick={() => {
+                handleDelete();
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip title="Filter list">
+            <IconButton>
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+      </Toolbar>
+    );
+  }
 
   return (
     <>
@@ -172,22 +233,23 @@ const Inicio: React.FC = () => {
             </Button>
           </Stack>
         </CustomTabPanel>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{ pagination: { paginationModel } }}
-          pageSizeOptions={[10, 100]}
-          checkboxSelection
-          onRowSelectionModelChange={(ids: any) => {
-            //const selectedIDs = new Set(ids);
-            //let selected = rows.filter(row => selectedIDs.has(row.id));
-
-            console.log(ids);
-            setSelectedRows(ids);
-          }}
-          sx={{ border: 0 }}
-        />
+        <view>
+          <EnhancedTableToolbar numSelected={selectedRows.length} />
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{ pagination: { paginationModel } }}
+            pageSizeOptions={[10, 100]}
+            checkboxSelection
+            disableMultipleRowSelection
+            onRowSelectionModelChange={(ids: any) => {
+              setSelectedRows(ids);
+            }}
+            sx={{ border: 0 }}
+          />
+        </view>
       </Paper>
+      <ToastContainer autoClose={4000} position="top-right" theme="colored" closeOnClick />
     </>
   );
 };

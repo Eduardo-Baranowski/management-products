@@ -5,9 +5,10 @@ import { z } from 'zod';
 
 import { createProductBodySchema } from '@/validations';
 
-import { CreateProductUseCase } from '@/use-cases/product';
+import { CreateProductUseCase } from '@/use-cases';
 
 import { ProductAlreadyExistsError } from '@/errors';
+
 import { httpError } from '@/utils';
 
 type Body = z.infer<typeof createProductBodySchema>;

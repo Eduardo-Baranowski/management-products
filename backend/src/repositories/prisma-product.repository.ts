@@ -44,6 +44,17 @@ export class PrismaProductRepository extends BaseRepository {
     return PrismaProductRepository.mapToWithOutCategoryDto(product);
   }
 
+  async delete(id: string): Promise<void> {
+    const listaIds = id.split(',');
+    listaIds.forEach(async idLista => {
+      await this.client.product.delete({
+        where: {
+          id: Number(idLista),
+        },
+      });
+    });
+  }
+
   async create(input: CreateProductInputDto, discount: number): Promise<ProductOutputDto> {
     const { categoryId, color, description, name, price } = input;
 

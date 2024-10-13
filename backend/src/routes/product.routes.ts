@@ -2,9 +2,12 @@ import { Router } from 'express';
 
 import { container } from 'tsyringe';
 
-import { CreateProductController } from '@/controllers';
-import { ListProductsController } from '@/controllers/product/list-product.controller';
-import { UpdateProductController } from '@/controllers/product/update-product.controller';
+import {
+  CreateProductController,
+  DeleteProductController,
+  ListProductsController,
+  UpdateProductController,
+} from '@/controllers';
 
 import {
   createProductBodySchema,
@@ -19,6 +22,7 @@ const router = Router();
 const createProductController = container.resolve(CreateProductController);
 const updateProductController = container.resolve(UpdateProductController);
 const listProductController = container.resolve(ListProductsController);
+const deleteProductController = container.resolve(DeleteProductController);
 
 router.post(
   '/product',
@@ -43,5 +47,7 @@ router.get(
   }),
   listProductController.handle.bind(listProductController),
 );
+
+router.delete('/product/:productId', deleteProductController.handle.bind(deleteProductController));
 
 export default router;

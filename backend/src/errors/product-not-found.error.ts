@@ -1,6 +1,6 @@
 export class ProductFoundError extends Error {
   constructor(message?: string) {
-    super(message ?? 'Leitura não encontrado');
+    super(message ?? 'Produto não encontrado');
     this.name = 'ProductFoundError';
   }
 }

@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 import { listProductsQuerySchema } from '@/validations';
 
-import { ListProductsUseCase } from '@/use-cases/product';
+import { ListProductsUseCase } from '@/use-cases';
 
 import { ProductsFoundError } from '@/errors';
 

@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 import { updateProductBodySchema } from '@/validations';
 
-import { UpdateProductUseCase } from '@/use-cases/product/update-product.use-case';
+import { UpdateProductUseCase } from '@/use-cases';
 
 import { ProductFoundError } from '@/errors';
 
