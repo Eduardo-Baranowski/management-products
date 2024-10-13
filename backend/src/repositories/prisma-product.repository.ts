@@ -11,7 +11,7 @@ import {
   UpdateProductInputDto,
 } from '@/dtos';
 
-import { Product as PrismaProduct } from '@prisma/client';
+import { Product as PrismaProduct, Category as PrismaCategory } from '@prisma/client';
 
 import { BaseRepository } from './base-repository';
 
@@ -41,7 +41,7 @@ export class PrismaProductRepository extends BaseRepository {
 
     if (!product) return undefined;
 
-    return PrismaProductRepository.mapToDto(product);
+    return PrismaProductRepository.mapToWithOutCategoryDto(product);
   }
 
   async create(input: CreateProductInputDto, discount: number): Promise<ProductOutputDto> {
@@ -61,6 +61,7 @@ export class PrismaProductRepository extends BaseRepository {
         categoryId: true,
         color: true,
         description: true,
+        category: true,
         name: true,
         price: true,
         promotionalPrice: true,
@@ -87,7 +88,7 @@ export class PrismaProductRepository extends BaseRepository {
       },
     });
 
-    return PrismaProductRepository.mapToDto(product);
+    return PrismaProductRepository.mapToWithOutCategoryDto(product);
   }
 
   private where(input: CountProductsInputDto): object {
@@ -132,6 +133,7 @@ export class PrismaProductRepository extends BaseRepository {
         categoryId: true,
         color: true,
         description: true,
+        category: true,
         name: true,
         price: true,
         promotionalPrice: true,
@@ -158,7 +160,20 @@ export class PrismaProductRepository extends BaseRepository {
     return count;
   }
 
-  static mapToDto(product: PrismaProduct): ProductDto {
+  static mapToDto(product: PrismaProduct & { category: PrismaCategory }): ProductDto {
+    return {
+      id: product.id,
+      categoryId: product.categoryId,
+      color: product.color,
+      description: product.description,
+      category: product.category,
+      name: product.name,
+      price: product.price,
+      promotionalPrice: product.promotionalPrice,
+    };
+  }
+
+  static mapToWithOutCategoryDto(product: PrismaProduct): ProductDto {
     return {
       id: product.id,
       categoryId: product.categoryId,

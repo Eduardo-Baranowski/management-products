@@ -48,7 +48,7 @@ const Inicio: React.FC = () => {
             name: object.name,
             description: object.description,
             color: object.color,
-            categoryId: object.categoryId,
+            categoryId: object.category?.name,
             price: object.price,
             promotionalPrice: object.promotionalPrice,
           });

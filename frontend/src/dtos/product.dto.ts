@@ -1,3 +1,4 @@
+import { CategoryDto } from './category.dto';
 import { OrderByValue, PaginationInputDto, PaginationOutputDto } from './pagination.dto';
 
 export type ProductDto = {
@@ -5,7 +6,8 @@ export type ProductDto = {
   name: string;
   description: string;
   color: string;
-  categoryId: number;
+  category?: CategoryDto;
+  categoryId: number | string | undefined;
   price: number;
   promotionalPrice: number;
 };
