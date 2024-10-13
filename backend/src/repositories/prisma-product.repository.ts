@@ -151,7 +151,7 @@ export class PrismaProductRepository extends BaseRepository {
   }
 
   async count(input: CountProductsInputDto): Promise<number> {
-    const count = await this.client.category.count({
+    const count = await this.client.product.count({
       where: this.where(input),
     });
 
