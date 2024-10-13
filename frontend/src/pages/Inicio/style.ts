@@ -13,6 +13,19 @@ export const TituloCentralizado = styled.h1`
   font-family: Poppins-Bold;
 `;
 
+export const ViewSelect = styled.div`
+  flex: 0.3;
+  margin-right: 20px;
+`;
+
+export const DivSearch = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: center;
+  flex-direction: row;
+  margin-right: 20px;
+`;
+
 export const Imagem = styled.img`
   float: left;
   opacity: 1;

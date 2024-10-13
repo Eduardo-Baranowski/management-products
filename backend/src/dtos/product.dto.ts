@@ -50,6 +50,7 @@ export type FindAllProductsOrderByFields = {
 
 export type FindAllProductsFilterFields = {
   name: string;
+  categoryId: number;
   createdAt: Date;
   updatedAt: Date;
 };

@@ -1,23 +1,23 @@
 import { Request, Response } from 'express';
 
 import { injectable } from 'tsyringe';
+import { z } from 'zod';
+
+import { listProductsQuerySchema } from '@/validations';
 
 import { ListProductsUseCase } from '@/use-cases/product';
 
 import { ProductsFoundError } from '@/errors';
+
+type Query = z.infer<typeof listProductsQuerySchema>;
 
 @injectable()
 export class ListProductsController {
   constructor(private readonly listProduct: ListProductsUseCase) {}
 
   async handle(request: Request, response: Response): Promise<Response> {
-    const input = {
-      page: Number(request.query.page),
-      limit: Number(request.query.limit),
-    };
-
     try {
-      const products = await this.listProduct.execute(input);
+      const products = await this.listProduct.execute(request.query as Query);
 
       return response.json(products).end();
     } catch (error) {

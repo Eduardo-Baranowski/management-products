@@ -103,6 +103,14 @@ export class PrismaProductRepository extends BaseRepository {
       });
     }
 
+    if (input.categoryId) {
+      Object.assign(where, {
+        categoryId: {
+          equals: Number(input.categoryId),
+        },
+      });
+    }
+
     if (input.createdAt) {
       Object.assign(where, {
         createdAt: {

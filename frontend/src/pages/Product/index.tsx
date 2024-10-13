@@ -112,7 +112,6 @@ const Product: React.FC = () => {
                 name="categoryId"
                 options={filterCategories}
                 onChange={e => {
-                  console.log(e);
                   if (e === null) {
                     e = {
                       value: '',

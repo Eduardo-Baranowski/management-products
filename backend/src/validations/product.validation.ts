@@ -25,5 +25,6 @@ export const listProductsQuerySchema = paginationValidation<FindAllProductsOrder
   orderFields: ['name', 'updatedAt'],
   filterFields: z.object({
     name: z.string().optional(),
+    categoryId: z.string().optional(),
   }),
 });
