@@ -4,24 +4,26 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import api from '../../services/api';
 import { ProductDto } from '../../dtos';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'Id', width: 70 },
   { field: 'name', headerName: 'Nome', width: 70 },
   { field: 'description', headerName: 'Descrição', width: 130 },
   { field: 'color', headerName: 'Cor', width: 130 },
-  { field: 'categoryId', headerName: 'Categoria de produto', width: 130 },
+  { field: 'categoryId', headerName: 'Categoria de produto', width: 160 },
   {
     field: 'price',
     headerName: 'Preço',
-    type: 'number',
+    // type: 'number',
     width: 90,
   },
   {
     field: 'promotionalPrice',
     headerName: 'Preço promocional',
-    type: 'number',
-    width: 90,
+    // type: 'number',
+    width: 140,
   },
 ];
 
@@ -41,7 +43,6 @@ const Inicio: React.FC = () => {
       .then(response => {
         var rows1: ProductDto[] = [];
         response.data.items.forEach(async (object: ProductDto) => {
-          console.log(object.promotionalPrice);
           rows1.push({
             id: object.id,
             name: object.name,
@@ -62,16 +63,29 @@ const Inicio: React.FC = () => {
   }, []);
 
   return (
-    <Paper sx={{ height: '100vh', width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{ pagination: { paginationModel } }}
-        pageSizeOptions={[10, 100]}
-        checkboxSelection
-        sx={{ border: 0 }}
-      />
-    </Paper>
+    <>
+      <Paper sx={{ height: '100vh', width: '100%' }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          initialState={{ pagination: { paginationModel } }}
+          pageSizeOptions={[10, 100]}
+          checkboxSelection
+          sx={{ border: 0 }}
+        />
+        <Stack direction="row" spacing={2} position={'absolute'} right={10} top={10}>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => {
+              window.location.pathname = '/product';
+            }}
+          >
+            Adicionar Produto
+          </Button>
+        </Stack>
+      </Paper>
+    </>
   );
 };
 
